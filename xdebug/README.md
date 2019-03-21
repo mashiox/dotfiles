@@ -96,6 +96,6 @@ xdebug Session Start Query String
 
 * [IP Address for XDebug](https://forums.docker.com/t/ip-address-for-xdebug/10460) *Docker IP on OS X issue*
 * [A similar tutorial](https://gist.github.com/chadrien/c90927ec2d160ffea9c4)
-* `vscode-php-debug`
+* `vscode-php-debug` from @felixfbecker
   * VSCode Marketplace https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug
   * GitHub https://github.com/felixfbecker/vscode-php-debug

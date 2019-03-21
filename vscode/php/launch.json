@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // SSH Forwarding Port 9000: `ssh -R 9000:localhost:9000 beta.wt`
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for XDebug",
+            "type": "php",
+            // "log": true,
+            "request": "launch",
+            "port": 9001,
+            "pathMappings": {
+                "/opt/myenv/file.php": "${workspaceRoot}/file.php",
+            }
+        }
+    ]
+}

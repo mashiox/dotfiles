@@ -1,0 +1,16 @@
+{
+	"sync-rsync.sites": [
+		{
+			"remotePath": "user@domain:/my/remote/path/"
+		},
+		{
+			"localPath": "/my/local/path/"
+		}
+	],
+	"sync-rsync.exclude":[
+		".git",
+		".vscode"
+	],
+	"sync-rsync.onSaveIndividual": true,
+	"sync-rsync.onLoadIndividual": true
+}
