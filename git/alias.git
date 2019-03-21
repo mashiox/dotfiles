@@ -1,0 +1,8 @@
+[alias]
+	quick-stats = ! /usr/local/bin/git-quick-stats
+	s = status
+	a = add
+	co = checkout
+	df = diff
+	d = diff
+
