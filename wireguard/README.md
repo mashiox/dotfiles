@@ -63,6 +63,8 @@ PersistentKeepalive = 24
 
 Replace `@@wg0_client_private_key@@` with the contents of the file `client_private.key`, and replace `@@wg0_server_public_key@@` with the contents of the file `server_public.key`
 
+Replace the `@@YOUR_SERVER_IP_ADDRESS@@` with your server's IP address. For a more advanced setup, you may also use a valid hostname.
+
 This configuration does not need to get saved to the server, but will go on your client device later.
 
 ```conf
