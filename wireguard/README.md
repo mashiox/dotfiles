@@ -106,3 +106,7 @@ Import the client config and connect to your server
 Desktop: (except windows?)
 
 Use the same commands in the "Starting the Server" section on your client machine, and start the VPN.
+
+### Need Help?
+
+Contact me at code@mashio.net
