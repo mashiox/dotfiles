@@ -43,9 +43,9 @@ Rebasing is another way that a developer can keep a feature branch up-to-date wi
 
 ### Recommended Reading
 
-https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase#:~:text=Rebase%20is%20one%20of%20two,has%20powerful%20history%20rewriting%20features.
-https://stackoverflow.com/questions/8939977/git-push-rejected-after-feature-branch-rebase
-https://git-scm.com/docs/git-rebase
+- https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
+- https://stackoverflow.com/questions/8939977/git-push-rejected-after-feature-branch-rebase
+- https://git-scm.com/docs/git-rebase
 
 ### Examples
 
