@@ -3,7 +3,58 @@
 ## Suggested Reading
 
 - https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
+- https://www.man7.org/linux/man-pages/man5/resolved.conf.5.html
 
+## Systemd resolved.conf notes
+
+Base configuration file: `/etc/systemd/resolved.conf`
+
+Recommended Override config: 
+
+```
+/etc/systemd/resolved.conf -> /dev/null
+/etc/systemd/system/resolved.conf
+```
+
+```ini
+[Resolve]
+# space-separated IPv4 or IPv6 to use as system DNS servers
+DNS=
+# only used if no other DNS server information is known
+FallbackDNS=
+
+# Default blank, space-separated list of search domains
+# network-specific TLDs resolv can use to find a host that is missing a domain component
+Domains=
+
+# Windows DNS -  RFC 4795 ?
+# https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution
+LLMNR=true|false|resolve
+
+# Multicast DNS RFC 6762[2]
+MulticastDNS=true|false|resolve
+
+# All DNS lookups DNSSEC-validated locally on true (ex. LLMNR and Multicast DNS)
+# DNSSEC validation is not possible until new trust anchors are configured locally
+# or the resolver software package is updated with the new root trust anchor
+DNSSEC=true|false|allow-downgrade
+
+# Requires a DNS server that supports DNS-over-TLS and has a valid certificate
+# for the IP when true.
+# Use Let's Encypt DNS validation for the cert
+DNSOverTLS=true|false|opportunistic
+
+# resolving a domain name which already got queried earlier will return the previous
+# result while the result is still valid
+# implicitly turned off when on a host-local IP address (127.0.0.1, ::1, etc)
+Cache=true|false|no-negative
+
+# @todo
+DNSStubListener=
+
+# Read /etc/hosts and try to resolve host or address using file entries
+ReadEtcHosts=true|false
+```
 
 ## Systemd DO Crib Notes
 
