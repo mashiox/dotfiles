@@ -1,0 +1,11 @@
+# A docker-compose file for getting shit done
+version: '3.2'
+services:
+  srv:
+    image: ubuntu:20.04
+    volumes:
+      - "/dev/null:/dev/null"
+	# ports:
+    command: '/bin/bash -c "trap : TERM INT; sleep infinity & wait"'
+    volumes:
+      - "./data:/mnt/data"
