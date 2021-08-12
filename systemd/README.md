@@ -227,4 +227,24 @@ Some things I do not know:
 - What are common use cases for unit templates?
 - What are good practices for using unit templates?
 
+## Maintenance
+
+Observing the system status
+
+```bash
+systemctl status
+```
+
+Finding all failed units
+
+```bash
+systemctl list-units --failed
+```
+
+Resetting a failed unit
+
+```bash
+systemctl reset-failed service-name.service
+```
+
 Need help? Drop me a line code@mashio.net
