@@ -1,5 +1,39 @@
 # Linux
 
+# Network
+
+Problem:
+List all programs listening for a network connection
+
+```bash
+$ netstat -tunlp
+```
+
+Argument disambiguation:
+
+`-t` or `--tcp` displays TCP network connections
+
+`-u` or `--udp` displays UDP network connections
+
+`-n` or `--numeric` Shows numeric IP addresses instead of attempting to discover host
+
+`-l` or `--listening` Shows active listening sockets
+
+`-p` or `--program` Shows the Process ID (PID) and Program name that the socket belongs to
+
+Problem:
+Send packets from a specific network interface
+Example using ping
+
+```bash
+$ ping -I wg0 -C4 example.com
+$ ping -I 10.0.0.1 -C4 example.com
+```
+
+Argument disambiguation:
+
+`-I` takes an address or interface name. It works differently depending on if an address or interface is provided.
+
 # Drive Management
 
 ## Checking a filesystem for bad blocks
@@ -17,6 +51,8 @@ mkfs -c /dev/sda1
 
 - https://techtitbits.com/2018/12/using-parteds-resizepart-non-interactively-on-a-busy-partition/
 - https://www.gnu.org/software/parted/manual/html_node/mkpart.html
+- http://raspberrypiwiki.com/Properly_Mount_USB_Storage_on_Raspberry_Pi
+- https://linoxide.com/linux-command/parted-commands-manage-disk-partition/
 
 You can discover more about drives attached to the computer with the following tools.
 Drives will always be under `/dev/`.
@@ -42,7 +78,7 @@ According to techtitbits.com ,in 2018, there is some difficulty in using the `pa
 
 ## Create 1 partition of largest size
 parted -s /dev/sda mklabel msdos
-parted -s /dev/sda -- mkpart primary ext4 1 -1s
+parted -s /dev/sda mkpart primary ext4 0% 100%
 
 ## Format
 mkfs.ext4 /dev/sda1
@@ -55,4 +91,20 @@ UUID=$(lsblk -o UUID /dev/sda1 | tail -n 1)
 echo "UUID=$UUID       /mnt/data/somewhere     ext4    defaults,nofail" \
 	| tee -a /etc/fstab
 
+```
+
+## Deleting a partition
+
+Reference `$partition_number` from either `parted print all` or the natural partition number `/dev/sdN`
+
+```bash
+parted rm $partition_number
+```
+
+## Reloading filesystem table /etc/fstab
+
+Reload fstab without re-mounting mountpoints that are already mounted
+
+```bash
+mount -av
 ```
