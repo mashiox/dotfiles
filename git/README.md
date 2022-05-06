@@ -27,6 +27,9 @@ git diff > my_diff.patch
 
 # Apply the patch to the code, from the same position in the file system
 patch -p1 < ./my_diff.patch
+
+git diff ./lib/file.php | patch -p1 ../app-new/lib/file.php
+patch -p1 $(git diff ./lib/file_in_git_path.php) ./lib/a_different_file.php
 ```
 
 ## Basic Usage 
@@ -41,11 +44,37 @@ git config --global aias.df diff
 
 Rebasing is another way that a developer can keep a feature branch up-to-date with a parent branch. The way rebase does this is by re-writing all the unique commits on the feature branch, after removing them and writing all of the missing commits from the parent branch back onto the feature branch. This means all of your feature branch's commits will have new commit hashes. On successful rebase, the feature branch will appear to have a cleaner commit history, because the feature branch had been updated in such a way that it could have been created from the parent branch's `HEAD`.
 
+## Investigating history
+
+Discovering the change history of a file, `$filepath`, that may not exist
+
+```bash
+git log -S $filepath
+
+# Example
+$ git log -Sdoc/app/_.ad
+```
+
+## Co-Authoring
+
+Add multiple people to commit history.
+
+Source: https://wiki.openstack.org/wiki/GitCommitMessages#Including_external_references
+
+```bash
+$ git commit -m "A commit we have made together.
+>
+>
+Co-authored-by: name <name@example.com>
+Co-authored-by: another-name <another-name@example.com>"
+```
+
 ### Recommended Reading
 
 - https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
 - https://stackoverflow.com/questions/8939977/git-push-rejected-after-feature-branch-rebase
 - https://git-scm.com/docs/git-rebase
+- https://git.wiki.kernel.org/index.php/CommitMessageConventions
 
 ### Examples
 
