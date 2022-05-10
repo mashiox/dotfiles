@@ -1,5 +1,10 @@
 # Linux
 
+## References
+
+- https://abarrak.gitbook.io/linux-sysops-handbook/
+- https://beej.us/guide/
+
 # Network
 
 Problem:
@@ -108,3 +113,16 @@ Reload fstab without re-mounting mountpoints that are already mounted
 ```bash
 mount -av
 ```
+
+# Management
+
+## Logrotate
+
+Reading:
+
+- https://linuxconfig.org/logrotate
+- https://linux.die.net/man/8/logrotate
+- https://www.systutorials.com/docs/linux/man/5-logrotate.conf/
+- [Examples](https://www.tutorialspoint.com/unix_commands/logrotate.htm)
+- https://askubuntu.com/questions/405663/configuring-logrotate-without-root-access-per-user-log-rotation
+
