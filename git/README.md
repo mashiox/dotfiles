@@ -65,8 +65,48 @@ Source: https://wiki.openstack.org/wiki/GitCommitMessages#Including_external_ref
 $ git commit -m "A commit we have made together.
 >
 >
+Co-authored-by: Matthew Walther <mbw@openthc.com>
 Co-authored-by: name <name@example.com>
 Co-authored-by: another-name <another-name@example.com>"
+```
+
+## Publishing a new repository from an existing repository
+
+Prerequisite: Have an existing repository hosted somewhere. We will refer to this at "origin"
+
+Example: `gitlab.com/mashiox/origin.git`
+
+- Step 1: Setup the new git repository, refered to as "downstream"
+
+Example: `github.com/mashiox/down.git`
+
+- Step 2: Add the new remote repository to your local repository's origin
+
+```bash
+git remote add downstream github.com/mashiox/down.git
+```
+
+- Step 3: Checkout a new branch from the main/master branch on origin
+
+```bash
+git checkout -b downstream/main
+```
+
+- Step 4: Set the new branch's upsteam to "downsteam". Remember "downsteam" is the reference for our new repository.
+
+```bash
+git push --set-upstream downstream downstream/main
+```
+
+## Copy files from one branch to another branch
+
+```bash
+# Naive approach: https://stackoverflow.com/a/307872
+git checkout otherbranch myfile.txt
+
+# Copy source at branch's moment into the file in the current working environment
+# https://stackoverflow.com/a/7099164
+git show otherbranch:myfile.txt > myfile.txt
 ```
 
 ### Recommended Reading
