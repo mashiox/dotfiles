@@ -1,4 +1,4 @@
-# Docker Secerts
+# Docker Secrets
 
 This document outlines a strategy to pass secrets to docker compose environments without exposing the secrets in plain text.
 
