@@ -18,7 +18,7 @@ Most modern operating systems do full text search by default.
 
 ## A prime workspace
 
-Create a folder/directory structure:
+Create a folder/directory structure under the user's `$HOME` folder/directory:
 
 ```
 workspace/
@@ -30,6 +30,10 @@ workspace/
 			002-we-take-advantage-of-how-filesystems-sort-numbers.md
 			069-watched-svb-fail-also-nice.md
 			100-today-i-explained-to-reddit-how-to-journal.md
+
+	reference/
+		# This repository
+
 ```
 
 ## In a project
