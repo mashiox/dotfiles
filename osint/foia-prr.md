@@ -1,10 +1,10 @@
 # FOIA / PRR in the United States
 
-Freedom Of Information Act (FOIA) and Public Records Requests (PR/PRR) are the worksflows by which Public and Government agencies in the United States releases information to the public and press. The role of this document is to show the reader how to investigate an institution's PRR process, and how to execute a novel request for information. 
+Freedom Of Information Act (FOIA) and Public Records Requests (PR/PRR) are the workflows by which Public and Government agencies in the United States releases information to the public and press. The role of this document is to show the reader how to investigate an institution's PRR process, and how to execute a novel request for information. 
 
 ## Government Systems of Records
 
-Systems of Records are the artifacts created by technical systems or personenel operations ran by a Government agency.
+Systems of Records are the artifacts created by technical systems or personnel operations ran by a Government agency.
 Typically, lists of systems of records are published by agencies.
 
 Examples:
@@ -25,29 +25,27 @@ State of Massachusetts example
 
 Email Draft using SoS template
 
-```
-Commission@CCCMass.Com
-Records@cccmass.com
-
-Re: Massachusetts Public Records Request
-
-Dear Cannabis Control Commission:
-
-This is a request under the Massachusetts Public Records Law (M. G. L. Chapter 66, Section 10). I am requesting that I be provided a copy of the following records:
-
-- All responses and bid records related to Bid Solicitation ABC-123
-- All responses and bid records related to Bid Solicitation XYZ-987
-- All Commission emails and any correspondence containing any of the following terms:
-  - "foo"
-  - "bar"
-  - "baz"
-
-I recognize that you may charge reasonable costs for copies, as well as for personnel time needed to comply with this request.
-
-The Public Records Law requires you to provide me with a written response within 10 business days. If you cannot comply with my request, you are statutorily required to provide an explanation in writing.
-
-Sincerely,
-```
+> Commission@CCCMass.Com
+> Records@cccmass.com
+> 
+> Re: Massachusetts Public Records Request
+> 
+> Dear Cannabis Control Commission:
+> 
+> This is a request under the Massachusetts Public Records Law (M. G. L. Chapter 66, Section 10). I am requesting that I be provided a copy of the following records:
+> 
+> - All responses and bid records related to Bid Solicitation ABC-123
+> - All responses and bid records related to Bid Solicitation XYZ-987
+> - All Commission emails and any correspondence containing any of the following terms:
+>   - "foo"
+>   - "bar"
+>   - "baz"
+> 
+> I recognize that you may charge reasonable costs for copies, as well as for personnel time needed to comply with this request.
+> 
+> The Public Records Law requires you to provide me with a written response within 10 business days. If you cannot comply with my request, you are statutorily required to provide an explanation in writing.
+> 
+> Sincerely,
 
 ## Making a FOIA/PR Request
 
