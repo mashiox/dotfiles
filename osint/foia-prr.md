@@ -20,6 +20,8 @@ State of Massachusetts example
 - General guidance https://www.mass.gov/info-details/massachusetts-law-about-freedom-of-information-and-public-records
 - SoS guidance https://www.sec.state.ma.us/divisions/public-records/public-records-law/public-records-request.htm
 - A-Z State Organizations https://www.mass.gov/info-details/massachusetts-state-organizations-a-to-z#a-c-
+- Fee Schedule https://www.mass.gov/files/2017-06/Public%20Records%20Law.pdf
+  - FAQ: "What is the cost for copies of public records; what about electronic records?"
 
 Email Draft using SoS template
 
@@ -56,6 +58,24 @@ Some governments provide their own template for initiating the PRR process. This
 Some governments and agencies provide a specific email for handling PRR workflows. This contact information can be found in several places like contact pages on agency websites, on higher-order governing agencies' directories, and agency contact directories.
 
 3. Edit the draft and send
+3. Be follow-up ready
+
+Agencies often have a minimum timeframe to respond to any given request. Staffing issues can make these windows harder for agencies to make consistently.
+It is advantageous to include these timeframes in your request, and reference supporting statute, code, or law.
+
+Non-statute example:
+> Please reply within the time allowed by law with the estimated timeframe in which this information can be released.
+
+There can be many reasons why a request is denied, even if information held by a public actor. One common factor that would make a responding agent to lean toward denying a request is a high upfront charge the agency would be required to leverage in order to recuperate labor costs.
+When a request is denied, responding agents typically will give some reason. Complete requests can extract more value from these types of responces by asking for detailed denial reasoning, and information on appealing the denial in the original request.
+
+Example:
+> If this request is denied, please issue a formal denial letter within the timeframe allowed by law, the reason(s) this request has been denied, and the official appeals process
+
+"Copying Charges" are sometimes the term referred to that agencies leverage to recuperate public labor expenses from requests that have a burdonsome process to put together. Many states have a program for private citizens to lower to eliminate the cost.
+
+Example:
+> If there are any exceptions that allow for free or reduced cost copies, please advise on the process for meeting these exceptions.
 
 ## Resources
 
@@ -65,3 +85,4 @@ Some governments and agencies provide a specific email for handling PRR workflow
 
 - https://www.justice.gov/opcl/privacy-act-1974
 - https://www.justice.gov/oip/department-justice-freedom-information-act-reference-guide
+- Copying Charges (WA) https://mrsc.org/explore-topics/legal/open-government/public-records-act/copying-charges-for-public-records
