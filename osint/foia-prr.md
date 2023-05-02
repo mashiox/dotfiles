@@ -18,8 +18,8 @@ Examples:
 State of Massachusetts example
 
 - General guidance https://www.mass.gov/info-details/massachusetts-law-about-freedom-of-information-and-public-records
-- SoS guidance https://www.sec.state.ma.us/divisions/public-records/public-records-law/public-records-request.htm
-- A-Z State Organizations https://www.mass.gov/info-details/massachusetts-state-organizations-a-to-z#a-c-
+- Secretary of State (SoS) guidance https://www.sec.state.ma.us/divisions/public-records/public-records-law/public-records-request.htm
+- A-Z State Organizations https://www.mass.gov/info-details/massachusetts-state-organizations-a-to-z
 - Fee Schedule https://www.mass.gov/files/2017-06/Public%20Records%20Law.pdf
   - FAQ: "What is the cost for copies of public records; what about electronic records?"
 
@@ -57,7 +57,6 @@ Some governments provide their own template for initiating the PRR process. This
 2. Discover the contacts you should be communicating with
 Some governments and agencies provide a specific email for handling PRR workflows. This contact information can be found in several places like contact pages on agency websites, on higher-order governing agencies' directories, and agency contact directories.
 
-3. Edit the draft and send
 3. Be follow-up ready
 
 Agencies often have a minimum timeframe to respond to any given request. Staffing issues can make these windows harder for agencies to make consistently.
