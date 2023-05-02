@@ -50,9 +50,11 @@ Email Draft using SoS template
 ## Making a FOIA/PR Request
 
 1. Email draft
+
 Some governments provide their own template for initiating the PRR process. This is helpful to us because it helps the responding agents understand our request easily. If guidance is not available, other resources like the [SPLC Letter generator](https://splc.org/lettergenerator/) or AI tools can help us create an initial draft.
 
 2. Discover the contacts you should be communicating with
+
 Some governments and agencies provide a specific email for handling PRR workflows. This contact information can be found in several places like contact pages on agency websites, on higher-order governing agencies' directories, and agency contact directories.
 
 3. Be follow-up ready
