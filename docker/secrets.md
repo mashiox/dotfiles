@@ -4,8 +4,8 @@ This document outlines a strategy to pass secrets to docker compose environments
 
 ## Prerequisites
 
-- [GnuPG](linux/gnupg.md)
-- [Pass](linux/pass.md)
+- [GnuPG](/linux/gnupg.md)
+- [Pass](/linux/pass.md)
 
 ## Steps
 
