@@ -6,11 +6,13 @@ My goals are simple tooling that can be read by any other app on a different lay
 
 ### Terms
 
+These are inspired by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+
 - YYYY
 4-digit year
 
 - DDD
-zero-padded 3-digit [day of year](https://miniwebtool.com/day-of-year-calendar/)
+zero-padded 3-digit [ordinal day of the implied year](https://miniwebtool.com/day-of-year-calendar/)
 
 ### Searching
 
