@@ -6,8 +6,6 @@ My goals are simple tooling that can be read by any other app on a different lay
 
 ### Terms
 
-These are inspired by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
-
 - YYYY
 4-digit year
 
@@ -53,3 +51,8 @@ corporate-app-acme/
 			069-watched-svb-fail-also-nice.md
 			100-today-i-explained-to-reddit-how-to-journal.md
 ```
+
+## Reading
+
+- [Ordinal Date (Wikipedia)](https://en.wikipedia.org/wiki/Ordinal_date)
+- [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
