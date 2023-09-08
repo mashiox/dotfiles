@@ -129,6 +129,7 @@ git show otherbranch:myfile.txt > myfile.txt
 
 ### Recommended Reading
 
+- https://edoceo.com/sys/git
 - https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
 - https://stackoverflow.com/questions/8939977/git-push-rejected-after-feature-branch-rebase
 - https://git-scm.com/docs/git-rebase
