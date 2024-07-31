@@ -5,3 +5,9 @@ alias ...="cd ../.."
 
 alias d-c="docker-compose"
 
+# Journal-style date stamp
+alias stamp="date +%Y-%j"
+
+# Command prompt format `[YYYY-DDD]$USER@$HOST:$PWD$`
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\][\D{%Y-%j}]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
