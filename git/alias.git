@@ -2,6 +2,7 @@
 # git config --list --show-origin --show-scope
 [alias]
 	quick-stats = ! /usr/local/bin/git-quick-stats
+	s  = status --short
 	st = status -uno
 	sa = status
 	a = add
