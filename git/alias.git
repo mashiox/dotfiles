@@ -2,9 +2,9 @@
 # git config --list --show-origin --show-scope
 [alias]
 	quick-stats = ! /usr/local/bin/git-quick-stats
-	st = status
+	st = status -uno
+	sa = status
 	a = add
 	co = checkout
 	df = diff
-	d = diff
 
