@@ -1,3 +1,6 @@
+# Add to your git config
+# git config --global include.path "./git/alias.git"
+#
 # @see Local `./.git/config`, Global `$HOME/.gitconfig`, System `/etc/gitconfig`
 # git config --list --show-origin --show-scope
 [alias]
