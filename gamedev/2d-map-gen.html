@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Procedural Map</title>
+<script src="https://cdn.jsdelivr.net/npm/noisejs@2.1.0/index.min.js"></script>
+</head>
+<body>
+<canvas id="gameCanvas" width="450" height="450"></canvas>
+<pre id="data-export" style="text-wrap: wrap;"></pre>
+
+<script>
+  class MapGenerator {
+    static perlinNoise(map, scale = 0.1, threshold = 0.5) {
+        const mapSize = map.length;
+
+        // Initialize Perlin noise function (you'll need a library like simplex-noise.js)
+        const noise = new Noise(); // Or your preferred Perlin/Simplex noise library
+        const val = Math.floor(Math.random() * 65536) + 1;
+        noise.seed(val);
+
+        for (let y = 1; y < mapSize - 1; y++) {
+            for (let x = 1; x < mapSize - 1; x++) {
+                // const value = noise.noise2D(x * scale, y * scale); // Sample noise
+                const value = noise.simplex2(x * scale, y * scale);
+
+                // Apply threshold to create binary map (0 or 1)
+                map[y][x] = value > threshold? 1: 0;
+            }
+        }
+
+        return map;
+    }
+
+    static cellularAutomata(map, iterations) {
+        for (let i = 0; i < iterations; i++) {
+            const newMap = map.map(row => row.slice()); // Copy the map
+            for (let y = 1; y < mapSize - 1; y++) {
+                for (let x = 1; x < mapSize - 1; x++) {
+                    let neighbors = 0;
+                    for (let ny = -1; ny <= 1; ny++) {
+                        for (let nx = -1; nx <= 1; nx++) {
+                            if (ny === 0 && nx === 0) continue; // Skip self
+                            neighbors += map[y + ny][x + nx];
+                        }
+                    }
+                    if (neighbors > 4) {
+                        newMap[y][x] = 1;
+                    } else if (neighbors < 4) {
+                        newMap[y][x] = 0;
+                    }
+                    //If neighbors == 4, the tile stays as it was
+                }
+            }
+            map = newMap; // Update the map for the next iteration
+        }
+        return map;
+    }
+
+    static bsp(map) {
+        const mapSize = map.length; // Get mapSize from the passed map
+
+        function partition(x1, y1, x2, y2) {
+            const width = x2 - x1;
+            const height = y2 - y1;
+
+            if (width < 5 || height < 5) { // Minimum room size
+                return;
+            }
+
+            const splitHorizontal = Math.random() < 0.5;
+
+            if (splitHorizontal) {
+                const splitY = Math.floor(y1 + height * (0.3 + Math.random() * 0.4)); // 30%-70% of height
+                for (let x = x1 + 1; x < x2; x++) {
+                    map[splitY][x] = 1; // Create wall
+                }
+                partition(x1, y1, x2, splitY);
+                partition(x1, splitY + 1, x2, y2);
+            } else {
+                const splitX = Math.floor(x1 + width * (0.3 + Math.random() * 0.4));
+                for (let y = y1 + 1; y < y2; y++) {
+                    map[y][splitX] = 1;
+                }
+                partition(x1, y1, splitX, y2);
+                partition(splitX + 1, y1, x2, y2);
+            }
+        }
+
+        partition(1, 1, mapSize - 2, mapSize - 2); // Start partitioning
+
+        return map;
+    }
+
+    static randomWalk(map) {
+        const mapSize = map.length; // Get mapSize from the passed map
+        let x = Math.floor(mapSize / 2);
+        let y = Math.floor(mapSize / 2);
+        const steps = mapSize * mapSize * 0.4; // Adjust number of steps
+
+        for (let i = 0; i < steps; i++) {
+            const direction = Math.floor(Math.random() * 4); // 0: up, 1: right, 2: down, 3: left
+
+            const dx = [0, 1, 0, -1][direction];
+            const dy = [-1, 0, 1, 0][direction];
+
+            const newX = Math.max(1, Math.min(mapSize - 2, x + dx));
+            const newY = Math.max(1, Math.min(mapSize - 2, y + dy));
+
+            map[newY][newX] = 1; // Carve path
+            x = newX;
+            y = newY;
+        }
+
+        return map;
+    }
+  }
+
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let mapSize = 75;
+  let tileSize;
+
+  function resizeCanvas() {
+    tileSize = canvas.width / mapSize;
+    canvas.height = canvas.width;
+  }
+
+  function generateMap() {
+    let map = [];
+    for (let y = 0; y < mapSize; y++) {
+      map[y] = []; // Initialize each row
+      for (let x = 0; x < mapSize; x++) {
+        map[y][x] = (x === 0 || x === mapSize - 1 || y === 0 || y === mapSize - 1) ? 1 : 0;
+      }
+    }
+
+    // Initialize interior to 0s
+    for (let y = 1; y < mapSize - 1; y++) {
+      for (let x = 1; x < mapSize - 1; x++) {
+        map[y][x] = 0; // Explicitly set to 0
+      }
+    }
+
+    // Now randomize after initialization
+    for (let y = 1; y < mapSize - 1; y++) {
+      for (let x = 1; x < mapSize - 1; x++) {
+        map[y][x] = Math.random() < 0.4 ? 1 : 0;
+      }
+    }
+
+    map = MapGenerator.cellularAutomata(map, 5);
+    map = MapGenerator.bsp(map); // Use BSP
+    map = MapGenerator.perlinNoise(map, 0.09, 0.02); // Adjust scale and threshold as needed
+    map = MapGenerator.randomWalk(map);
+    return map;
+  }
+
+  function renderMap(map) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let y = 0; y < mapSize; y++) {
+      for (let x = 0; x < mapSize; x++) {
+        ctx.fillStyle = map[y][x] === 1 ? 'black' : 'white';
+        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      }
+    }
+  }
+
+  function updateExport(map) {
+    const pre = document.getElementById('data-export');
+    pre.innerHTML = JSON.stringify(map);
+  }
+
+  function initialize() {
+    canvas.width = 1000;
+    resizeCanvas();
+    let map = generateMap();
+    renderMap(map);
+    updateExport(map)
+
+    canvas.addEventListener('click', function() {
+      map = generateMap();
+      renderMap(map);
+      updateExport(map)
+    });
+  }
+
+  initialize();
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Map Editor</title>
+<style>
+  #mapCanvas {
+    border: 1px solid black;
+    cursor: crosshair;
+  }
+  #mapData {
+    width: 500px;
+    height: 300px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Map Editor</h1>
+
+<textarea id="mapData"></textarea><br>
+<button id="loadButton">Load Map</button> <canvas id="mapCanvas" width="500" height="500"></canvas>
+
+<script>
+  const mapCanvas = document.getElementById('mapCanvas');
+  const ctx = mapCanvas.getContext('2d');
+  const mapDataTextarea = document.getElementById('mapData');
+  const loadButton = document.getElementById('loadButton');
+
+  let mapSize;
+  let tileSize;
+  let mapData;
+
+  function resizeCanvas() {
+    if (mapSize) { // Only resize if mapSize is defined
+        tileSize = mapCanvas.width / mapSize;
+        mapCanvas.height = mapCanvas.width;
+    }
+  }
+
+  function renderMap(map) {
+    if (!map ||!Array.isArray(map) || map.length === 0 ||!Array.isArray(map)) {
+      console.error("Invalid map data.");
+      return;
+    }
+
+    mapSize = map.length;
+    resizeCanvas();
+    ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+
+    for (let y = 0; y < mapSize; y++) {
+      for (let x = 0; x < mapSize; x++) {
+        ctx.fillStyle = map[y][x] === 1? 'black': 'white';
+        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      }
+    }
+
+    mapData = map;
+    mapDataTextarea.value = JSON.stringify(mapData);
+  }
+
+  mapCanvas.addEventListener('click', (event) => {
+    if (!mapData) return; // Do nothing if mapData is not loaded
+
+    const rect = mapCanvas.getBoundingClientRect();
+    const x = Math.floor((event.clientX - rect.left) / tileSize);
+    const y = Math.floor((event.clientY - rect.top) / tileSize);
+
+    if (x >= 0 && x < mapSize && y >= 0 && y < mapSize) {
+      mapData[y][x] = mapData[y][x] === 1? 0: 1;
+      renderMap(mapData);
+    }
+  });
+
+  loadButton.addEventListener('click', () => {
+    try {
+      const loadedMap = JSON.parse(mapDataTextarea.value);
+      renderMap(loadedMap);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      alert("Invalid JSON data. Please check the format.");
+    }
+  });
+
+
+  // Example of pre-filling the text area and rendering on load
+  const exampleMap = [ /* Your example map data here */ ]; // Or leave empty initially
+  mapDataTextarea.value = JSON.stringify(exampleMap);
+  if (exampleMap.length > 0) { // Only render if exampleMap has data
+      renderMap(JSON.parse(mapDataTextarea.value));
+  }
+</script>
+
+</body>
+</html>

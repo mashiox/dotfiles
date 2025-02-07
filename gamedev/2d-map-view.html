@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Map Viewer</title>
+<style>
+  #mapCanvas {
+    border: 1px solid black;
+  }
+  #mapData {
+    width: 500px; /* Adjust as needed */
+    height: 300px; /* Adjust as needed */
+  }
+</style>
+</head>
+<body>
+
+<h1>Map Viewer</h1>
+
+<textarea id="mapData"></textarea><br>
+<button id="renderButton">Render Map</button>
+<canvas id="mapCanvas" width="500" height="500"></canvas>
+
+<script>
+  const mapCanvas = document.getElementById('mapCanvas');
+  const ctx = mapCanvas.getContext('2d');
+  const mapDataTextarea = document.getElementById('mapData');
+  const renderButton = document.getElementById('renderButton');
+
+  let mapSize;
+  let tileSize;
+
+  function resizeCanvas() {
+    tileSize = mapCanvas.width / mapSize;
+    mapCanvas.height = mapCanvas.width;
+  }
+
+  function renderMap(map) {
+    if (!map ||!Array.isArray(map) || map.length === 0 ||!Array.isArray(map)) {
+      console.error("Invalid map data.");
+      return;
+    }
+
+    mapSize = map.length;
+    resizeCanvas();
+    ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+
+    for (let y = 0; y < mapSize; y++) {
+      for (let x = 0; x < mapSize; x++) {
+        ctx.fillStyle = map[y][x] === 1? 'black': 'white';
+        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      }
+    }
+  }
+
+  renderButton.addEventListener('click', () => {
+    try {
+      const mapData = JSON.parse(mapDataTextarea.value);
+      renderMap(mapData);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      alert("Invalid JSON data. Please check the format.");
+    }
+  });
+
+    //Example of pre-filling the text area.
+    const exampleMap = [,,,,,,,,,];
+    mapDataTextarea.value = JSON.stringify(exampleMap);
+    renderMap(exampleMap);
+
+</script>
+
+</body>
+</html>
