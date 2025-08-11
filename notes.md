@@ -56,3 +56,5 @@ corporate-app-acme/
 
 - [Ordinal Date (Wikipedia)](https://en.wikipedia.org/wiki/Ordinal_date)
 - [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+- Evidence https://www.al3rez.com/todo-txt-journey
+- Evidence https://jeffhuang.com/productivity_text_file/
