@@ -15,6 +15,7 @@ Key Takeaways: Including every tags in every prompt is not essential. Focusing o
 <p><span class="tag tone">[tone]</span> Use motivational and empathetic language.</p>
 
 Tag definitions in their order of importance:
+
 | Tag | Description |
 | --- | --- |
 | <span class="tag task">[task]</span> | Clearly define your end goal |
