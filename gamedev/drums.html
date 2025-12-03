@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numpad Drum Machine</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #050505;
+            color: #e0e0e0;
+            overflow: hidden; /* Prevent scrolling on mobile triggering */
+            touch-action: manipulation;
+        }
+
+        /* Neon Glow Effects */
+        .pad-btn {
+            transition: all 0.05s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            background: linear-gradient(145deg, #1a1a1a, #111111);
+        }
+
+        .pad-btn:active, .pad-btn.active {
+            transform: scale(0.96);
+            box-shadow: 0 0 20px var(--glow-color), inset 0 0 15px var(--glow-color);
+            background: #222;
+            border-color: var(--glow-color);
+            color: #fff;
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        /* Grid Layout for Numpad */
+        .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr); 
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Numpad Specific Placements */
+        .key-numlock { grid-column: 1; grid-row: 1; }
+        .key-div { grid-column: 2; grid-row: 1; }
+        .key-mul { grid-column: 3; grid-row: 1; }
+        .key-sub { grid-column: 4; grid-row: 1; }
+
+        .key-7 { grid-column: 1; grid-row: 2; }
+        .key-8 { grid-column: 2; grid-row: 2; }
+        .key-9 { grid-column: 3; grid-row: 2; }
+        .key-add { grid-column: 4; grid-row: 2 / span 2; height: 100%; }
+
+        .key-4 { grid-column: 1; grid-row: 3; }
+        .key-5 { grid-column: 2; grid-row: 3; }
+        .key-6 { grid-column: 3; grid-row: 3; }
+
+        .key-1 { grid-column: 1; grid-row: 4; }
+        .key-2 { grid-column: 2; grid-row: 4; }
+        .key-3 { grid-column: 3; grid-row: 4; }
+        .key-enter { grid-column: 4; grid-row: 4 / span 2; height: 100%; }
+
+        .key-0 { grid-column: 1 / span 2; grid-row: 5; width: 100%; }
+        .key-dot { grid-column: 3; grid-row: 5; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid #333;
+            border-top: 3px solid #00ffcc;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Scanline Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- UI Container -->
+    <div class="relative z-20 w-full max-w-2xl flex flex-col gap-6">
+        
+        <!-- Header -->
+        <header class="text-center space-y-2">
+            <h1 class="text-4xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 filter drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">
+                DRUM PAD
+            </h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest">
+                JavaScript Live Coding Engine // Synthesized Mode
+            </p>
+        </header>
+
+        <!-- Status / Controls -->
+        <div id="controls-area" class="flex justify-center items-center gap-4 min-h-[50px]">
+            <button id="start-btn" class="px-6 py-2 bg-cyan-900 hover:bg-cyan-700 text-cyan-100 rounded border border-cyan-500 transition shadow-[0_0_15px_rgba(0,255,255,0.2)] font-bold text-sm uppercase tracking-wider">
+                Initialize Audio Engine
+            </button>
+            <div id="status-display" class="hidden text-green-400 text-xs font-mono bg-black/50 px-4 py-2 rounded border border-green-900">
+                <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                <span id="status-text">ENGINE READY</span>
+            </div>
+        </div>
+
+        <!-- The Drum Machine Grid -->
+        <div class="numpad-grid bg-gray-900 p-6 rounded-xl border border-gray-800 shadow-2xl relative">
+            <!-- Decorative screw holes -->
+            <div class="absolute top-2 left-2 w-2 h-2 rounded-full bg-gray-800"></div>
+            <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-gray-800"></div>
+            <div class="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-gray-800"></div>
+            <div class="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-gray-800"></div>
+
+            <!-- Row 1 -->
+            <button class="pad-btn key-numlock rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-[10px] uppercase">Num</span>
+            </button>
+            <button class="pad-btn key-div rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-lg">/</span>
+            </button>
+            <button class="pad-btn key-mul rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-lg">*</span>
+            </button>
+            <button class="pad-btn key-sub rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-lg">-</span>
+            </button>
+
+            <!-- Row 2 -->
+            <button data-key="7" class="pad-btn key-7 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ff00ff;">
+                <span class="text-2xl font-bold">7</span>
+                <span class="text-[10px] text-pink-400 uppercase">Crash</span>
+            </button>
+            <button data-key="8" class="pad-btn key-8 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ff00ff;">
+                <span class="text-2xl font-bold">8</span>
+                <span class="text-[10px] text-pink-400 uppercase">Hi Tom</span>
+            </button>
+            <button data-key="9" class="pad-btn key-9 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ff00ff;">
+                <span class="text-2xl font-bold">9</span>
+                <span class="text-[10px] text-pink-400 uppercase">Ride</span>
+            </button>
+            <button class="pad-btn key-add rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-lg">+</span>
+            </button>
+
+            <!-- Row 3 -->
+            <button data-key="4" class="pad-btn key-4 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #00ffff;">
+                <span class="text-2xl font-bold">4</span>
+                <span class="text-[10px] text-cyan-400 uppercase">OpenHH</span>
+            </button>
+            <button data-key="5" class="pad-btn key-5 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #00ffff;">
+                <span class="text-2xl font-bold">5</span>
+                <span class="text-[10px] text-cyan-400 uppercase">Mid Tom</span>
+            </button>
+            <button data-key="6" class="pad-btn key-6 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #00ffff;">
+                <span class="text-2xl font-bold">6</span>
+                <span class="text-[10px] text-cyan-400 uppercase">ClsdHH</span>
+            </button>
+
+            <!-- Row 4 -->
+            <button data-key="1" class="pad-btn key-1 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ffff00;">
+                <span class="text-2xl font-bold">1</span>
+                <span class="text-[10px] text-yellow-400 uppercase">Kick</span>
+            </button>
+            <button data-key="2" class="pad-btn key-2 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ffff00;">
+                <span class="text-2xl font-bold">2</span>
+                <span class="text-[10px] text-yellow-400 uppercase">Snare</span>
+            </button>
+            <button data-key="3" class="pad-btn key-3 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ffff00;">
+                <span class="text-2xl font-bold">3</span>
+                <span class="text-[10px] text-yellow-400 uppercase">Clap</span>
+            </button>
+            <button class="pad-btn key-enter rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-xs">Ent</span>
+            </button>
+
+            <!-- Row 5 -->
+            <button data-key="0" class="pad-btn key-0 rounded-md p-4 flex flex-col items-center justify-center" style="--glow-color: #ff3333;">
+                <div class="flex items-baseline gap-2">
+                    <span class="text-2xl font-bold">0</span>
+                    <span class="text-[10px] text-red-400 uppercase">Sub Bass</span>
+                </div>
+            </button>
+            <button class="pad-btn key-dot rounded-md p-4 flex flex-col items-center justify-center text-gray-600" disabled style="--glow-color: #555;">
+                <span class="text-xl">.</span>
+            </button>
+        </div>
+
+        <!-- Log/Output -->
+        <div class="bg-black border border-gray-800 p-3 rounded font-mono text-xs h-24 overflow-y-auto opacity-80 shadow-inner" id="console-log">
+            <div class="text-gray-500">> System Ready. Waiting for Strudel Engine...</div>
+        </div>
+        
+        <div class="text-center text-gray-600 text-[10px]">
+            Make sure NumLock is ON to use keyboard keys.
+        </div>
+    </div>
+
+    <!-- Strudel & Logic -->
+    <script type="module">
+        import { s, initStrudel } from 'https://esm.sh/@strudel/web@latest?bundle';
+
+        // --- NATIVE AUDIO SETUP (ZERO LATENCY - SYNTHESIZED) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const nativeCtx = new AudioContext();
+        const nativeBuffers = {}; 
+
+        // Sound names map
+        const SAMPLE_MAP = {
+            '7': { name: 'crash' },
+            '8': { name: 'ht' },
+            '9': { name: 'ride' },
+            '4': { name: 'oh' },
+            '5': { name: 'mt' },
+            '6': { name: 'hh' },
+            '1': { name: 'bd' },
+            '2': { name: 'sd' },
+            '3': { name: 'cp' },
+            '0': { name: 'sub' }
+        };
+
+        const consoleLog = document.getElementById('console-log');
+        const startBtn = document.getElementById('start-btn');
+        const statusDisplay = document.getElementById('status-display');
+        const statusText = document.getElementById('status-text');
+        let isAudioReady = false;
+
+        function log(msg, color = 'text-gray-400') {
+            const div = document.createElement('div');
+            div.className = color;
+            div.textContent = `> ${msg}`;
+            consoleLog.prepend(div);
+        }
+
+        // --- DRUM SYNTHESIS ENGINE ---
+        // Generates drum sounds procedurally to avoid Network/404 errors completely.
+        
+        function createBuffer(duration) {
+            return nativeCtx.createBuffer(1, nativeCtx.sampleRate * duration, nativeCtx.sampleRate);
+        }
+
+        function generateKick(name) {
+            const duration = 0.5;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            // Simple Sine Sweep logic for 808 Kick
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                // Frequency drops from 150Hz to 0Hz rapidly
+                let freq = 150 * Math.exp(-t * 10); 
+                data[i] = Math.sin(2 * Math.PI * freq * t) * Math.exp(-t * 5); // Amplitude envelope
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        function generateSub(name) {
+            const duration = 0.8;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            // Deep sustain sine
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                let freq = 55 * Math.exp(-t * 2); 
+                data[i] = Math.sin(2 * Math.PI * freq * t) * Math.exp(-t * 2); 
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        function generateSnare(name) {
+            const duration = 0.25;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                // White noise
+                let noise = (Math.random() * 2 - 1) * Math.exp(-t * 15);
+                // Body (Triangle-ish)
+                let body = Math.sin(2 * Math.PI * 180 * t) * Math.exp(-t * 10);
+                data[i] = (noise * 0.8 + body * 0.4);
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        function generateHiHat(name, open = false) {
+            const duration = open ? 0.4 : 0.08;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                // High frequency noise
+                let noise = (Math.random() * 2 - 1);
+                // Bandpass filter approximation (simple high pitch jitter)
+                if (i > 1) noise = (noise - data[i-1]) * 0.9;
+                
+                data[i] = noise * Math.exp(-t * (open ? 10 : 60));
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        function generateTom(name, freqStart) {
+            const duration = 0.3;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                let freq = freqStart * Math.exp(-t * 8); 
+                data[i] = Math.sin(2 * Math.PI * freq * t) * Math.exp(-t * 6);
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        function generateClap(name) {
+            const duration = 0.2;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                let noise = (Math.random() * 2 - 1);
+                // Sawtooth envelope for "clap" texture (multi-burst)
+                let env = Math.exp(-t*20);
+                // Add bursts
+                if (t < 0.010) env *= 0.5;
+                if (t > 0.010 && t < 0.020) env *= 0.8;
+                
+                data[i] = noise * env;
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        function generateCymbal(name) {
+            const duration = 1.2;
+            const buffer = createBuffer(duration);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < buffer.length; i++) {
+                let t = i / nativeCtx.sampleRate;
+                let noise = (Math.random() * 2 - 1);
+                // Metallic ring logic (multiple sine waves mixed with noise)
+                let metal = Math.sin(2 * Math.PI * 300 * t) + Math.sin(2 * Math.PI * 800 * t);
+                data[i] = (noise * 0.7 + metal * 0.2) * Math.exp(-t * 5);
+            }
+            nativeBuffers[name] = buffer;
+        }
+
+        async function synthesizeAll() {
+            log("Synthesizing Drum Kit...", "text-blue-400");
+            statusText.textContent = "GENERATING...";
+            statusDisplay.querySelector('span').classList.remove('bg-green-500');
+            statusDisplay.querySelector('span').classList.add('bg-blue-500');
+
+            // Generate sounds locally
+            generateKick('bd');
+            generateSub('sub');
+            generateSnare('sd');
+            generateClap('cp');
+            generateHiHat('hh', false); // closed
+            generateHiHat('oh', true);  // open
+            generateTom('ht', 200);     // high
+            generateTom('mt', 130);     // mid
+            generateCymbal('crash');
+            generateCymbal('ride');
+
+            log("Synthesis Complete.", "text-blue-300");
+        }
+
+        // --- Zero Latency Player ---
+        function playNative(soundName) {
+            if (!nativeBuffers[soundName]) return;
+            
+            const source = nativeCtx.createBufferSource();
+            source.buffer = nativeBuffers[soundName];
+            source.connect(nativeCtx.destination);
+            source.start(0);
+        }
+
+        // --- Initialization ---
+        startBtn.addEventListener('click', async () => {
+            startBtn.textContent = "Initializing...";
+            startBtn.disabled = true;
+            
+            try {
+                // Resume native context
+                if (nativeCtx.state === 'suspended') {
+                    await nativeCtx.resume();
+                }
+
+                // Initialize Strudel
+                await initStrudel();
+
+                // Switch UI
+                startBtn.classList.add('hidden');
+                statusDisplay.classList.remove('hidden');
+                statusDisplay.classList.add('flex');
+                
+                // Synthesize buffers
+                await synthesizeAll();
+
+                isAudioReady = true;
+                statusText.textContent = "ZERO LATENCY MODE";
+                statusDisplay.querySelector('span').classList.remove('bg-blue-500');
+                statusDisplay.querySelector('span').classList.add('bg-green-500');
+                
+                log("Engine Ready. Latency: ~0ms", "text-green-400");
+            } catch (e) {
+                console.error("Audio Init Error:", e);
+                log("Error: " + e.message, "text-red-500");
+                startBtn.textContent = "Retry";
+                startBtn.disabled = false;
+            }
+        });
+
+        // --- Trigger Logic ---
+        function triggerSound(key) {
+            if (!isAudioReady) return;
+
+            const info = SAMPLE_MAP[key];
+            if (!info) return;
+
+            // Visual Feedback
+            const btn = document.querySelector(`button[data-key="${key}"]`);
+            if (btn) {
+                btn.classList.add('active');
+                setTimeout(() => btn.classList.remove('active'), 60);
+            }
+
+            // 1. Log to Strudel
+            log(`s("${info.name}").play()`, "text-cyan-300");
+
+            // 2. Play Sound Immediately
+            playNative(info.name);
+        }
+
+        // --- Event Listeners ---
+        document.querySelectorAll('button[data-key]').forEach(btn => {
+            btn.addEventListener('pointerdown', (e) => {
+                e.preventDefault(); 
+                triggerSound(btn.dataset.key);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.repeat) return; 
+
+            let key = null;
+            if (e.code.startsWith('Numpad')) {
+                key = e.code.replace('Numpad', '');
+            } else if (e.key >= '0' && e.key <= '9') {
+                key = e.key;
+            }
+
+            if (key && SAMPLE_MAP[key]) {
+                triggerSound(key);
+            }
+        });
+
+    </script>
+</body>
+</html>
