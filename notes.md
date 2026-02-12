@@ -58,3 +58,7 @@ corporate-app-acme/
 - [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
 - Evidence https://www.al3rez.com/todo-txt-journey
 - Evidence https://jeffhuang.com/productivity_text_file/
+- Evidence https://ntietz.com/blog/using-an-engineering-notebook/
+- Org Mode https://doc.norang.ca/org-mode.html
+- todo.txt http://todotxt.org/
+- HN https://news.ycombinator.com/item?id=44864134
