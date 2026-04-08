@@ -127,6 +127,27 @@ git checkout otherbranch myfile.txt
 git show otherbranch:myfile.txt > myfile.txt
 ```
 
+## Analysis
+
+Source: Ally Piechowski, 2026-04-08, https://piechowski.io/post/git-commands-before-reading-code/
+
+```bash
+# What changes the most
+git log --format=format: --name-only --since="1 year ago" | sort | uniq -c | sort -nr | head -20
+
+# Where do bugs cluster
+git log -i -E --grep="fix|bug|broken" --name-only --format='' | sort | uniq -c | sort -nr | head -20
+
+# Commits by month / Accelerating or Slowing?
+git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
+
+# Team struggle bussing or firefighting
+git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'
+
+# Who built this
+git shortlog -sn --no-merges
+```
+
 ### Recommended Reading
 
 - https://edoceo.com/sys/git
