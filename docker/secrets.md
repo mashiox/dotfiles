@@ -26,9 +26,21 @@ pass Test/docker-www.env > /mnt/secrets/www.env
 
 Start docker services.
 
-```yaml
-version: "3"
+Command Line
+```bash
+docker run -d \
+  --name client \
+  -p 8420:80 \
+  --env-file /mnt/secrets/www.env \
+  nginx
 
+docker exec -it client env
+
+docker exec client printenv your_secret_key
+```
+
+Compose definition:
+```yaml
 services:
     client:
         image: nginx
@@ -39,7 +51,7 @@ services:
 ```
 
 ```bash
-$ docker-compose up -d
-$ docker-compose exec client bash
+$ docker compose up -d
+$ docker compose exec client bash
 > env
 ```
