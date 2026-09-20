@@ -5,9 +5,9 @@
 Source: https://refactoringenglish.com/excerpts/write-an-effective-design-doc/
 
 ```
-Objective: 
-
 Background:
+
+Objective: 
 
 Related documents:
 
